@@ -12,7 +12,7 @@ import io.netty.util.concurrent.GenericFutureListener;
 
 /**
  * @ClassName: NettyServer
- * @Author: Administrator
+ * @Author: lxt
  * @Description: netty服务端
  * @Version: 1.0
  */
