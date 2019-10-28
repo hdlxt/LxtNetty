@@ -9,4 +9,5 @@ package common;
 public class Constants {
     public final static String DEFAULT_HOST = "127.0.0.1";
     public final static int DEFAULT_PORT = 8000;
+    public final static String DEFAULT_CHARSET = "utf-8";
 }
