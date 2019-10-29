@@ -16,7 +16,7 @@ import io.netty.util.concurrent.GenericFutureListener;
  * @Description: netty服务端
  * @Version: 1.0
  */
-public class NettyServer {
+public class NettyTestServer {
     public static void main(String[] args) {
         /**
          *      首先看到，我们创建了两个NioEventLoopGroup，这两个对象可以看做是传统IO编程模型的两大线程组，bossGroup表示监听端口

@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @Description: netty 客户端
  * @Version: 1.0
  */
-public class NettyClient  {
+public class NettyTestClient {
 
     private static final  int MAX_RETRY = 5;
 

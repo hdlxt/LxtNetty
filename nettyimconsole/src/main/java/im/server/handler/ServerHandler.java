@@ -3,10 +3,14 @@ package im.server.handler;
 import im.protocol.packet.Packet;
 import im.protocol.packet.PacketCodeC;
 import im.protocol.request.LoginRequestPacket;
+import im.protocol.request.MessageRequestPacket;
 import im.protocol.response.LoginResponsePacket;
+import im.protocol.response.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.time.LocalDateTime;
 
 /**
  * @ClassName: ServerHandler
@@ -35,6 +39,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 loginResponsePacket.setReason("帐号密码校验失败");
             }
             ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(loginResponsePacket);
+            ctx.channel().writeAndFlush(responseByteBuf);
+        }else if(packet instanceof MessageRequestPacket){
+            MessageRequestPacket messageRequestPacket = (MessageRequestPacket) packet;
+            System.out.println(LocalDateTime.now() +":收到客户端消息："+messageRequestPacket.getMessage());
+            MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
+            messageResponsePacket.setMessage("服务端回复："+messageRequestPacket.getMessage());
+            ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(messageResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
         }
     }

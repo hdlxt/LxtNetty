@@ -4,6 +4,8 @@ import im.protocol.packet.Packet;
 import im.protocol.packet.PacketCodeC;
 import im.protocol.request.LoginRequestPacket;
 import im.protocol.response.LoginResponsePacket;
+import im.protocol.response.MessageResponsePacket;
+import im.util.LoginUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -42,10 +44,15 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         if(packet instanceof LoginResponsePacket){
             LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
             if(loginResponsePacket.isSuccess()){
+                LoginUtil.markAsLogin(ctx.channel());
                 System.out.println(LocalDateTime.now() + ":客户端登录成功！");
             }else {
                 System.err.println(LocalDateTime.now() + ":客户端登录失败，原因："+loginResponsePacket.getReason());
             }
+        }else if(packet instanceof MessageResponsePacket){
+            MessageResponsePacket messageResponsePacket = (MessageResponsePacket)packet;
+            System.out.println(LocalDateTime.now()+":收到服务端消息："+messageResponsePacket.getMessage());
+
         }
 
     }

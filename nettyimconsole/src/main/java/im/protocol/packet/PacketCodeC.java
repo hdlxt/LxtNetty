@@ -1,8 +1,9 @@
 package im.protocol.packet;
 
-import im.protocol.command.Command;
 import im.protocol.request.LoginRequestPacket;
+import im.protocol.request.MessageRequestPacket;
 import im.protocol.response.LoginResponsePacket;
+import im.protocol.response.MessageResponsePacket;
 import im.serialize.Serializer;
 import im.serialize.impl.JSONSerializer;
 import io.netty.buffer.ByteBuf;
@@ -10,6 +11,8 @@ import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static im.protocol.command.Command.*;
 
 /**
  * @ClassName: PacketCodeC
@@ -31,8 +34,10 @@ public class PacketCodeC {
 
     private PacketCodeC() {
         packetTypeMap = new HashMap<>();
-        packetTypeMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
-        packetTypeMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
