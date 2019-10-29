@@ -12,11 +12,11 @@ import im.serialize.SerializerAlgorithm;
  */
 public class JSONSerializer implements Serializer {
     @Override
-    public byte getSerielizerAlgorithm() {
+    public byte getSerializerAlogrithm() {
         return SerializerAlgorithm.JSON;
     }
     @Override
-    public byte[] seriallize(Object object) {
+    public byte[] serialize(Object object) {
         return JSON.toJSONBytes(object);
     }
     @Override

@@ -41,10 +41,22 @@ public class PacketCodeC {
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();
-        serializerMap.put(serializer.getSerielizerAlgorithm(),serializer);
+        serializerMap.put(serializer.getSerializerAlogrithm(),serializer);
 
     }
 
+    public void encode(ByteBuf byteBuf, Packet packet) {
+        // 1. 序列化 java 对象
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+        // 2. 实际编码过程
+        byteBuf.writeInt(MAGIC_NUMBER);
+        byteBuf.writeByte(packet.getVersion());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
+        byteBuf.writeByte(packet.getCommand());
+        byteBuf.writeInt(bytes.length);
+        byteBuf.writeBytes(bytes);
+    }
 
 
     /**
@@ -56,7 +68,7 @@ public class PacketCodeC {
         // 创建ByteBuf对象
         ByteBuf byteBuf = ByteBufAllocator.DEFAULT.ioBuffer();
         // 序列化 Java对象
-        byte[] bytes = Serializer.DEFAULT.seriallize(packet);
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
         // 实际编码过程
         // 魔法值
@@ -64,7 +76,7 @@ public class PacketCodeC {
         // 版本号
         byteBuf.writeByte(packet.getVersion());
         // 序列化算法
-        byteBuf.writeByte(Serializer.DEFAULT.getSerielizerAlgorithm());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
         // 指令
         byteBuf.writeByte(packet.getCommand());
         // 字节长度

@@ -1,12 +1,13 @@
 package im.client;
 
 import common.Constants;
-import im.client.handler.ClientHandler;
-import im.protocol.packet.PacketCodeC;
+import im.client.handler.LoginResponseHandler;
+import im.client.handler.MessageResponseHandler;
+import im.codec.PacketDecoder;
+import im.codec.PacketEncoder;
 import im.protocol.request.MessageRequestPacket;
 import im.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -44,7 +45,10 @@ public class NettyClient {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         // 添加逻辑处理器
-                        channel.pipeline().addLast(new ClientHandler());
+                        channel.pipeline().addLast(new PacketDecoder());
+                        channel.pipeline().addLast(new LoginResponseHandler());
+                        channel.pipeline().addLast(new MessageResponseHandler());
+                        channel.pipeline().addLast(new PacketEncoder());
 
 
                     }
@@ -63,7 +67,7 @@ public class NettyClient {
         bootstrap.connect(host,port)
                 .addListener(future -> {
                     if(future.isSuccess()){
-                        System.out.println("连接成功！");
+                        System.out.println("连接成功！启动控制台线程。。。");
                         Channel channel = ((ChannelFuture)future).channel();
                         // 连接成功，启动控制台线程
                         startConsoleThread(channel);
@@ -97,8 +101,7 @@ public class NettyClient {
 
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
-                    ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(packet);
-                    channel.writeAndFlush(byteBuf);
+                    channel.writeAndFlush(packet);
                 }
             }
         }).start();

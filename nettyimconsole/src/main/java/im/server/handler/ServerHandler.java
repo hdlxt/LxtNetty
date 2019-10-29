@@ -38,6 +38,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 loginResponsePacket.setSuccess(false);
                 loginResponsePacket.setReason("帐号密码校验失败");
             }
+
             ByteBuf responseByteBuf = PacketCodeC.INSTANCE.encode(loginResponsePacket);
             ctx.channel().writeAndFlush(responseByteBuf);
         }else if(packet instanceof MessageRequestPacket){

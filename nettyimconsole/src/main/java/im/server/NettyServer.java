@@ -1,7 +1,10 @@
 package im.server;
 
 import common.Constants;
-import im.server.handler.ServerHandler;
+import im.codec.PacketDecoder;
+import im.codec.PacketEncoder;
+import im.server.handler.LoginRequestHandler;
+import im.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -33,7 +36,10 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                        nioSocketChannel.pipeline().addLast(new ServerHandler());
+                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
+                        nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
+                        nioSocketChannel.pipeline().addLast(new PacketEncoder());
                     }
                 });
         // 绑定默认端口

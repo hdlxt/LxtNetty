@@ -1,25 +1,22 @@
 package im.client.handler;
 
-import im.protocol.packet.Packet;
-import im.protocol.packet.PacketCodeC;
 import im.protocol.request.LoginRequestPacket;
 import im.protocol.response.LoginResponsePacket;
-import im.protocol.response.MessageResponsePacket;
 import im.util.LoginUtil;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * @ClassName: ClientHandler
+ * @ClassName: LoginResponseHandler
  * @Author: lxt
- * @Description:
+ * @Description: 登录响应处理器
  * @Version: 1.0
  */
-public class ClientHandler extends ChannelInboundHandlerAdapter {
+public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
+
 
     @Override
     public void channelActive(ChannelHandlerContext ctx){
@@ -30,27 +27,18 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         loginRequestPacket.setUserId(UUID.randomUUID().toString());
         loginRequestPacket.setUsername("lxt");
         loginRequestPacket.setPassword("pwd");
+
         // 写数据
         ctx.channel().writeAndFlush(loginRequestPacket);
 
     }
     @Override
-    public void channelRead(ChannelHandlerContext ctx,Object msg){
-        ByteBuf byteBuf = (ByteBuf)msg;
-        Packet packet = PacketCodeC.INSTANCE.decode(byteBuf);
-        if(packet instanceof LoginResponsePacket){
-            LoginResponsePacket loginResponsePacket = (LoginResponsePacket) packet;
+    public void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket){
             if(loginResponsePacket.isSuccess()){
                 LoginUtil.markAsLogin(ctx.channel());
                 System.out.println(LocalDateTime.now() + ":客户端登录成功！");
             }else {
                 System.err.println(LocalDateTime.now() + ":客户端登录失败，原因："+loginResponsePacket.getReason());
             }
-        }else if(packet instanceof MessageResponsePacket){
-            MessageResponsePacket messageResponsePacket = (MessageResponsePacket)packet;
-            System.out.println(LocalDateTime.now()+":收到服务端消息："+messageResponsePacket.getMessage());
-
-        }
-
     }
 }

@@ -21,14 +21,13 @@ public interface Serializer {
      * 序列化算法
      * @return
      */
-    byte getSerielizerAlgorithm();
-
+    byte getSerializerAlogrithm();
     /**
      * java对象转化为二进制
      * @param object
      * @return
      */
-    byte[] seriallize(Object object);
+    byte[] serialize(Object object);
 
     /**
      * 二进制转化为java对象
