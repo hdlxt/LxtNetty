@@ -19,12 +19,12 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx){
         System.out.println(LocalDateTime.now()+":客户端写出数据");
-        // 获取数据
-        ByteBuf byteBuf = getByteBuf(ctx);
-        // 写数据
-        ctx.channel().writeAndFlush(byteBuf);
-
-
+        for (int i = 0; i < 100; i++) {
+            // 获取数据
+            ByteBuf byteBuf = getByteBuf(ctx);
+            // 写数据
+            ctx.channel().writeAndFlush(byteBuf);
+        }
     }
     private ByteBuf getByteBuf(ChannelHandlerContext ctx){
         // 获取二进制抽象ByteBuf

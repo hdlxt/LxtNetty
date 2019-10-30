@@ -6,6 +6,7 @@ import im.client.handler.MessageResponseHandler;
 import im.codec.PacketDecoder;
 import im.codec.PacketEncoder;
 import im.protocol.request.MessageRequestPacket;
+import im.spliter.Spliter;
 import im.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -45,6 +46,7 @@ public class NettyClient {
                     @Override
                     protected void initChannel(Channel channel) throws Exception {
                         // 添加逻辑处理器
+                        channel.pipeline().addLast(new Spliter());
                         channel.pipeline().addLast(new PacketDecoder());
                         channel.pipeline().addLast(new LoginResponseHandler());
                         channel.pipeline().addLast(new MessageResponseHandler());

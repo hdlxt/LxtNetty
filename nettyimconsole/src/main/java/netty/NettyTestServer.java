@@ -71,9 +71,9 @@ public class NettyTestServer {
                     }
                 });
         // 绑定默认端口
-        serverBootstrap.bind(Constants.DEFAULT_PORT);
+//        serverBootstrap.bind(Constants.DEFAULT_PORT);
         // 自动绑定递增端口测试
-//        bind(serverBootstrap,135);
+        bind(serverBootstrap, Constants.DEFAULT_PORT);
     }
 
     /**

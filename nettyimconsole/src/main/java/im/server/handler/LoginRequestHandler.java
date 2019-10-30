@@ -2,6 +2,7 @@ package im.server.handler;
 
 import im.protocol.request.LoginRequestPacket;
 import im.protocol.response.LoginResponsePacket;
+import im.util.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -24,6 +25,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 登录校验
         if(vaild(loginRequestPacket)){
             loginResponsePacket.setSuccess(true);
+            LoginUtil.markAsLogin(channelHandlerContext.channel());
         }else{
             loginResponsePacket.setSuccess(false);
             loginResponsePacket.setReason("帐号密码校验失败");
