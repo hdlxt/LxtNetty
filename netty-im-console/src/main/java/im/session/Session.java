@@ -16,4 +16,7 @@ public class Session {
         this.userId = userId;
         this.userName = userName;
     }
+
+    public Session() {
+    }
 }

@@ -1,12 +1,10 @@
 package im.server;
 
 import common.Constants;
+import im.codec.PacketCodecHandler;
 import im.codec.PacketDecoder;
 import im.codec.PacketEncoder;
-import im.server.handler.AuthHandler;
-import im.server.handler.CreateGroupRequestHandler;
-import im.server.handler.LoginRequestHandler;
-import im.server.handler.MessageRequestHandler;
+import im.server.handler.*;
 import im.spliter.Spliter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -40,12 +38,10 @@ public class NettyServer {
                     @Override
                     protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                         nioSocketChannel.pipeline().addLast(new Spliter());
-                        nioSocketChannel.pipeline().addLast(new PacketDecoder());
-                        nioSocketChannel.pipeline().addLast(new LoginRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new AuthHandler());
-                        nioSocketChannel.pipeline().addLast(new MessageRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new CreateGroupRequestHandler());
-                        nioSocketChannel.pipeline().addLast(new PacketEncoder());
+                        nioSocketChannel.pipeline().addLast(PacketCodecHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(LoginRequestHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(AuthHandler.INSTANCE);
+                        nioSocketChannel.pipeline().addLast(IMHandler.INSTANCE);
                     }
                 });
         // 绑定默认端口

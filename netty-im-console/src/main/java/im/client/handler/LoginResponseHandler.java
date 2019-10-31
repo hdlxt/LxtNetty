@@ -20,19 +20,8 @@ import java.util.UUID;
 public class LoginResponseHandler extends SimpleChannelInboundHandler<LoginResponsePacket> {
 
 
-//    @Override
-//    public void channelActive(ChannelHandlerContext ctx){
-//        System.out.println(LocalDateTime.now()+ ":客户端开始登录");
-//
-//        // 创建登录对象
-//        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
-//        loginRequestPacket.setUserId(UUID.randomUUID().toString());
-//        loginRequestPacket.setUsername("lxt");
-//        loginRequestPacket.setPassword("pwd");
-//
-//        // 写数据
-//        ctx.channel().writeAndFlush(loginRequestPacket);
-//    }
+
+
     @Override
     public void channelRead0(ChannelHandlerContext ctx, LoginResponsePacket loginResponsePacket){
         String userId = loginResponsePacket.getUserId();

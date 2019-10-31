@@ -2,6 +2,7 @@ package im.server.handler;
 
 import im.util.LoginUtil;
 import im.util.SessionUtil;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -14,7 +15,15 @@ import java.time.LocalDateTime;
  * @Date: 2019-10-30 13:00
  * @Version 1.0
  **/
+@ChannelHandler.Sharable
 public class AuthHandler extends ChannelInboundHandlerAdapter {
+
+    public static final AuthHandler INSTANCE = new AuthHandler();
+
+
+    private AuthHandler() {
+
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

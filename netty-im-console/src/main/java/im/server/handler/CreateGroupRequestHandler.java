@@ -6,6 +6,7 @@ import im.session.Session;
 import im.util.IDUtil;
 import im.util.SessionUtil;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -20,9 +21,14 @@ import java.util.List;
  * @Description: 创建群聊处理器
  * @Version: 1.0
  */
+@ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
 
+    public static final CreateGroupRequestHandler INSTANCE = new CreateGroupRequestHandler();
 
+    private CreateGroupRequestHandler() {
+
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, CreateGroupRequestPacket createGroupRequestPacket) throws Exception {
@@ -52,5 +58,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         System.out.print("群创建成功，id为【"+createGroupResponsePacket.getGroupId()+"】，");
         System.out.println("群里面有："+createGroupResponsePacket.getUserNameList());
 
+        // 5. 保存群组相关的信息
+        SessionUtil.bindChannelGroup(createGroupResponsePacket.getGroupId(), channelGroup);
     }
 }
