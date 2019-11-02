@@ -57,7 +57,7 @@ public class NettyClient {
                         channel.pipeline().addLast(new GroupMessageResponseHandler());
                         channel.pipeline().addLast(new LogoutResponseHandler());
                         channel.pipeline().addLast(new PacketEncoder());
-
+                        channel.pipeline().addLast(new HeartBeatTimerHandler());
 
                     }
                 });
